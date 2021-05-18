@@ -1,0 +1,14 @@
+##############################################################################
+                           Welcome to using S.I.T!
+##############################################################################
+
+your query species is Gallus gallus
+
+your upload file name is %SIT_HOME/example/test.vcf
+
+your chromosome number is 1
+
+the start coordinate is 1
+
+the end coordinate is 1000000
+

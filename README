@@ -1,0 +1,94 @@
+Introduction
+============
+
+S.I.T is a software to identify and evaluate the caustive genetic variants underlying a QTL/GWAS defined association region.
+
+
+Requirements
+============
+
+1). Python 2, Python 2.7.x or newer 
+
+2). R version 2.15.1 or higher
+
+3). biopython 1.65 or higher
+
+
+Installation
+============
+
+1). The R library "biomaRt" need to be installed before running sit.
+
+To install "biomaRt" package, start R and enter:
+
+source("http://bioconductor.org/biocLite.R")
+
+biocLite("biomaRt")
+
+The R library "RCurl" may also need to be installed in some case.
+
+To install "RCurl" package, start R and enter:
+
+install.packages("RCurl")
+
+2). Biopython package need to be installed before running sit.
+
+To install biopython on mac, see link: http://biopython.org/wiki/Download  
+
+To install biopython on Linux, please open terminal and type:
+
+sudo apt-get install python-biopython
+
+
+How to run ?
+============
+
+To run S.I.T, go to " %SIT_HOME/bin/ " folder and double click "sit"
+
+or open the terminal, enter to the directory " %SIT_HOME/bin/ " and type:
+
+python sit
+
+-----------------------------------------------------------------------------
+
+The example input data are provided in directory "/$SIT_HOME/example/"
+
+The following results might look like this:
+
+-----------------------------------------------------------------------------
+
+ENSGALT00000015891	15967	[A/G]	utr3
+ENSGALT00000015903	84190	[T/C]	splicing site
+ENSGALT00000015903	86072	[A/G]	splicing site
+ENSGALT00000015903	88390	[G/T]	utr3
+ENSGALT00000015903	88406	[A/G]	utr3
+ENSGALT00000015903	88468	[C/G]	utr3
+ENSGALT00000015890 106750 [ GAC / GCC 197 D / A 65 ] This is non-synomynous mutation
+ENSGALT00000015890 108620 [ ttttctttctttcttt / ttttctttcttt 333 N / X 110 ] This is an indel in a codon!!!
+ENSGALT00000015890	110653	[C/T]	utr3
+ENSGALT00000015890	110736	[A/G]	utr3
+ENSGALT00000015890	110824	[C/T]	utr3
+ENSGALT00000015890	110874	[A/G]	utr3
+ENSGALT00000015890	110880	[A/G]	utr3
+ENSGALT00000015890	111131	[A/G]	utr3
+ENSGALT00000015890	111206	[C/T]	utr3
+ENSGALT00000015890	111207	[C/T]	utr3
+ENSGALT00000015890	111481	[C/A]	utr3
+ENSGALT00000015890	111595	[G/A]	utr3
+ENSGALT00000015890	111619	[C/T]	utr3
+ENSGALT00000040436 112149 [ GTC / CTC 613 V / L 204 ] This is non-synomynous mutation
+ENSGALT00000040436 112155 [ CAG / TAG ] This snp causes stop codon!!!
+ENSGALT00000040436 112170 [ gaagcaagcaagcaagcaag / gAAGCaagcaagcaagcaagcaag 634 Q / X 211 ] This is an indel in a codon!!!
+ENSGALT00000040436 112171 [ aagc / aAGCGagc 635 Q / X 211 ] This is an indel in a codon!!!
+ENSGALT00000040436 112172 [ agca / aGCACgca 636 Q / X 211 ] This is an indel in a codon!!!
+ENSGALT00000040436 112178 [ caag / cAAGAaag 642 I / X 213 ] This is an indel in a codon!!!
+ENSGALT00000040436 113321 [ AGG / AG 167 V / X 55 ] This is an indel in a codon!!!
+ENSGALT00000040436 113372 [ CTC / CGC 218 L / R 72 ] This is non-synomynous mutation
+ENSGALT00000040436 113401 [ CAC / GAC 247 H / D 82 ] This is non-synomynous mutation
+ENSGALT00000040436 113436 [ TGG / TGC 282 W / C 93 ] This is non-synomynous mutation
+ENSGALT00000015860	117012	[C/A]	splicing site
+
+-----------------------------------------------------------------------------
+
+
+

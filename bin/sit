@@ -1,0 +1,310 @@
+#!/usr/bin/env python 2.6
+
+import os
+import sys
+import subprocess
+import re
+
+from Tkinter import *
+from tkFileDialog import *
+
+class MyCode(object):
+	def __init__(self):
+		root = Tk()
+		root.title('welcome to use S.I.T!')
+		screen_width = root.winfo_screenwidth()
+		screen_height = root.winfo_screenheight() 
+		
+		x = (screen_width/2) - (855/2) 
+		y = (screen_height/2) - (900/2)
+		root.geometry('%dx%d+%d+%d' % (855, 700, x, y))
+		
+		self.species_name = StringVar()
+		self.inputfile = StringVar()
+		self.chr_num = StringVar()
+		self.start = StringVar()
+		self.end = StringVar()
+
+######################## title ############################
+
+		Label(root,width=10,text='S.I.T',fg='blue',font=("Helvetica", 56)).place(x=250,y=40)
+		Label(root,width=50,text='Snps Identification Tool',fg='blue',font=("Helvetica", 16)).place(x=210,y=130)
+
+#########################load an entry####################      
+
+		Label(root,text='Please select the species name',fg='green').place(x=310,y=179)		
+		self.species_name.set("Saccharomyces cerevisiae")
+	
+		OptionMenu(root,self.species_name,
+"thorhynchus anatinus",
+"Taeniopygia guttata",
+"Cavia porcellus",
+"Gasterosteus aculeatus",
+"Loxodonta africana",
+"Ictidomys tridecemlineatus",
+"Myotis lucifugus",
+"Homo sapiens",
+"Choloepus hoffmanni",
+"Ciona savignyi",
+"Felis catus",
+"Rattus norvegicus",
+"Gallus gallus",
+"Tupaia belangeri",
+"Pelodiscus sinensis",
+"Xenopus tropicalis",
+"Equus caballus",
+"Callithrix jacchus",
+"Pongo abelii",
+"Danio rerio",
+"Xiphophorus maculatus",
+"Tetraodon nigroviridis",
+"Tursiops truncatus",
+"Latimeria chalumnae",
+"Saccharomyces cerevisiae",
+"Ailuropoda melanoleuca",
+"Caenorhabditis elegans",
+"Macaca mulatta",
+"Pteropus vampyrus",
+"Monodelphis domestica",
+"Vicugna pacos",
+"Anolis carolinensis",
+"Oreochromis niloticus",
+"Tarsius syrichta",
+"Otolemur garnettii",
+"Mustela putorius furo",
+"Takifugu rubripes",
+"Drosophila melanogaster",
+"Petromyzon marinus",
+"Erinaceus europaeus",
+"Microcebus murinus",
+"Oryzias latipes",
+"Pan troglodytes",
+"Echinops telfairi",
+"Ciona intestinalis",
+"Ochotona princeps",
+"Gorilla gorilla",
+"Dipodomys ordii",
+"Nomascus leucogenys",
+"Sus scrofa",
+"Mus musculus",
+"Oryctolagus cuniculus",
+"Meleagris gallopavo",
+"Gadus morhua",
+"Sorex araneus",
+"Dasypus novemcinctus",
+"Procavia capensis",
+"Bos taurus",
+"Macropus eugenii",
+"Sarcophilus harrisii",
+"Canis familia"
+		).place(x = 290, y = 205)
+	
+		Label(root,text='Please upload your sequence file.',fg='green').place(x=310,y=240)
+       		self.e = Entry(root, width=20,textvariable=self.inputfile)
+       		self.e.place(x=325,y=265)
+ 
+       		B = Button(root,text='Upload',command=self.Onload)
+        	B.place(x=505,y=265)
+
+		Label (root, text='Enter the chromsome number',fg='green').place(x=310,y=300)
+		Entry (root, width=5,textvariable=self.chr_num).place(x=385,y=325)
+
+		Label (root,text='Enter the start coordinate of QTL region ',fg='green').place(x=310,y=355)
+		Entry (root, width=10,textvariable=self.start).place(x=365,y=380)
+      
+		Label (root,text='Enter the end coordinate of QTL position',fg='green').place(x=310,y=420)
+		Entry (root, width=10,textvariable=self.end).place(x=365,y=445)
+
+                #Label (root, text='Please enter your R version (i.e. R-3.0.0)', fg='green').place(x=320,y=479)
+                #self.version.set("R-3.0.0")
+                #Entry (root, width=8,textvariable=self.version).place(x=385,y=495)
+
+      
+#########################load run button##################
+
+		button = Button(root,text='RUN',fg='red',command=self.Run)
+		button.place(x=385,y=535)
+
+#########################upload image#####################     
+
+		image2 = PhotoImage(file="../figure/ki.gif")
+		panel_2 = Label(root, image=image2)      
+		panel_2.image = image2
+		panel_2.place(x=130,y=571)
+      
+		image3 = PhotoImage(file="../figure/slu.gif")
+		panel_3 = Label(root, image=image3)      
+		panel_3.image = image3
+		panel_3.place(x=610,y=550)
+
+######################load menu bar#######################      
+
+		menubar = Menu(root)
+		filemenu = Menu(menubar)      
+		menubar.add_cascade(label='File', menu=filemenu)
+		filemenu.add_command(label='load...', command=self.Onload)
+		filemenu.add_command(label='open...', command=self.open_as)
+      
+		helpmenu = Menu(menubar)
+		menubar.add_cascade(label="Help", menu=helpmenu)
+		helpmenu.add_command(label="About...", command=self.create_a_child_window_for_readme)
+		filemenu.add_command(label='Exit', command=root.quit)      
+		root.config(menu=menubar)
+
+		root.mainloop()
+      
+####################################################################################################   
+   
+        def Onload(self):
+		
+		self.e.delete(0, END)
+
+		fileName = askopenfilename(filetypes=[("Text files", "*.txt"), ("SNPs files", "*.vcf"), ("Fasta files", "*.fa"), ("All Files","*.*")])
+		self.e.insert(0, fileName)
+
+	def create_a_child_window_for_readme(self):
+        
+		# create the root window
+		root_3 = Tk()
+		text = Text(root_3)
+        
+		# modify the window
+		root_3.title("READ ME")
+		root_3.geometry("900x600")
+        
+		myTextWidget= Text(root_3) # set up a text widget as a root (window) child
+		scrollbar = Scrollbar(root_3)
+		scrollbar.pack(side = RIGHT,fill = Y)
+
+		myTextWidget.configure(yscrollcommand = scrollbar.set)
+	
+        
+		myFile= file("../README") # get a file handle
+		myText=myFile.read() # read the file to variable
+		myFile.close() # close file handle
+        
+		myTextWidget.insert(0.0,myText) # insert the file's text into the text widget
+        
+		myTextWidget.pack(expand=1, fill=BOTH) # show the widget
+
+		scrollbar.config(command=myTextWidget.yview)
+        
+		root_3.mainloop()
+    
+    	def create_a_child_window_for_result(self,filename):
+        
+		root_2 = Tk()
+		text = Text(root_2)
+        
+		root_2.title("RESULT")
+		root_2.geometry("900x600")
+        
+		myTextWidget= Text(root_2) # set up a text widget as a root (window) child
+
+		scrollbar = Scrollbar(root_2)
+		scrollbar.pack(side = RIGHT,fill = Y)
+
+		myTextWidget.configure(yscrollcommand = scrollbar.set)
+	
+		myFile=open(filename,'r') # get a file handle
+
+                myText= myFile.read() # read the file to variable
+                myFile.close() # close file handle
+
+                myTextWidget.insert(0.0,myText) # insert the file's text into the text widget
+
+                myTextWidget.pack(expand=1, fill=BOTH) # show the widget
+
+		scrollbar.config(command=myTextWidget.yview)
+	#	root_2.wm_attributes("-toolwindow")
+
+		self.create_a_child_window_for_ranking_result("../result/ranked_aa.txt")
+	
+		root_2.mainloop()
+	    
+	def create_a_child_window_for_ranking_result(self,filename):
+		root_local = Tk()
+		text = Text(root_local)
+        
+		root_local.title("RANKED NON-SYNOMYNOUS SNPS")
+		root_local.geometry("900x600")
+        
+		myTextWidget= Text(root_local) # set up a text widget as a root (window) child
+
+                scrollbar = Scrollbar(root_local)
+                scrollbar.pack(side = RIGHT,fill = Y)
+
+                myTextWidget.configure(yscrollcommand = scrollbar.set)
+        
+		myFile=file(filename) # get a file handle
+		myText= myFile.read() # read the file to variable
+		myFile.close() # close file handle
+
+		myTextWidget.insert(0.0,myText) # insert the file's text into the text widget
+      
+		myTextWidget.pack(expand=1, fill=BOTH) # show the widget
+		
+                scrollbar.config(command=myTextWidget.yview)
+		
+		root_local.mainloop()
+
+   	def open_as(self):
+		fileName_2 = askopenfilename(filetypes=[("Text and Python files","*.fa *.txt *.py *.pyw"), 
+		     ("HTML files","*.html"), 
+		     ("All files","*.*")])
+		
+		try:
+		
+			self.create_a_child_window(fileName_2)
+		
+		except IOError:
+		
+			from tkMessageBox import showwarning
+			showwarning("Open", "Cannot open the file.")	
+			raise Cancel
+		 
+	def file_save(self):
+
+		fout = asksaveasfile(mode='w', defaultextension=".txt")
+		text2save = str(self.text.get(1.0,END))
+		fout.write(text2save)
+		fout.close()
+
+	
+	def Run(self):
+		print
+		print "##############################################################################"
+		print "                           Welcome to using S.I.T!"
+		print "##############################################################################"
+		print 
+		print "your query species is %s" %self.species_name.get()
+		print
+		print "your upload file name is %s" %self.inputfile.get()
+		print
+		print "your chromosome number is %s" %self.chr_num.get()
+		print 
+		print "the start coordinate is %s" %self.start.get()
+		print 
+		print "the end coordinate is %s" %self.end.get()
+		print 
+		
+		#species = self.species_name.get()
+		species = re.sub("\s","_",self.species_name.get())
+
+		os.system("rm ../result/*")
+		
+#		os.system("del /Q ..\result\*.*")
+#		os.system("del /Q ..\source\*.*")
+		
+
+		os.system("python pipeline.py %s %s %s %s %s" %(species,self.inputfile.get(),self.chr_num.get(),self.start.get(),self.end.get()))
+		try:
+			self.create_a_child_window_for_result("../result/total.txt")
+
+#			self.create_a_child_window_for_ranking_result("../result/ranked_aa.txt")	
+		except IOError as e:
+			print 'Oh dear.'
+ 
+if __name__=='__main__':    
+
+	myApp = MyCode()
