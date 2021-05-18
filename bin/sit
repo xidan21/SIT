@@ -101,7 +101,7 @@ class MyCode(object):
 	
 		Label(root,text='Please upload your sequence file.',fg='green').place(x=310,y=240)
        		self.e = Entry(root, width=20,textvariable=self.inputfile)
-       		self.e.place(x=325,y=265)
+       		self.e.place(x=315,y=265)
  
        		B = Button(root,text='Upload',command=self.Onload)
         	B.place(x=505,y=265)
